@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { Menu, Search, ShoppingBag, X, Phone } from 'lucide-react'
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
+import { Menu, ShoppingBag, X, Phone } from 'lucide-react'
 import { useI18n } from '../i18n'
 import type { Key } from '../i18n'
 import { useCart } from '../state/cart'
@@ -32,11 +32,8 @@ export function Layout() {
   const { t, lang, setLang } = useI18n()
   const { count, setOpen } = useCart()
   const { pathname, hash } = useLocation()
-  const navigate = useNavigate()
   const [scrolled, setScrolled] = useState(false)
   const [menu, setMenu] = useState(false)
-  const [searching, setSearching] = useState(false)
-  const [q, setQ] = useState('')
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8)
@@ -47,7 +44,6 @@ export function Layout() {
 
   useEffect(() => {
     setMenu(false)
-    setSearching(false)
     if (!hash) {
       window.scrollTo(0, 0)
       return
@@ -71,11 +67,6 @@ export function Layout() {
     }
   }, [menu])
 
-  const onSearch = (e: React.FormEvent) => {
-    e.preventDefault()
-    navigate(`/san-pham?q=${encodeURIComponent(q.trim())}`)
-    setQ('')
-  }
 
   return (
     <>
@@ -96,9 +87,6 @@ export function Layout() {
             ))}
           </nav>
           <div className="header__tools">
-            <button className="icon-btn" aria-label={t('nav.search')} onClick={() => setSearching((s) => !s)}>
-              <Search />
-            </button>
             <button className="icon-btn cart-btn" aria-label={`${t('nav.cart')} (${count})`} onClick={() => setOpen(true)}>
               <ShoppingBag />
               {count > 0 && <span className="cart-btn__badge">{count}</span>}
@@ -112,12 +100,6 @@ export function Layout() {
             </div>
           </div>
         </div>
-        {searching && (
-          <form className="container searchbar" onSubmit={onSearch} role="search">
-            <Search size={18} aria-hidden />
-            <input autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder={t('list.search')} aria-label={t('nav.search')} />
-          </form>
-        )}
       </header>
 
       {menu && (
