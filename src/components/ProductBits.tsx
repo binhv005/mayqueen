@@ -56,3 +56,23 @@ export function ProductCard({ product }: { product: Product }) {
     </article>
   )
 }
+
+export function ShopCard({ p }: { p: Product }) {
+  const { t, tr, money } = useI18n()
+  return (
+    <article className="sc">
+      <div className="sc__img">
+        <Link to={`/san-pham/${p.slug}`} aria-label={p.name}>
+          <img src={p.image} alt={tr(p.gallery[0].alt)} width={800} height={800} loading="lazy" />
+        </Link>
+        <AddButton productId={p.id} className="btn btn--leaf btn--sm sc__add" iconOnly />
+      </div>
+      <div className="sc__body">
+        <span className="sc__type">{tr(p.type)}</span>
+        <h3><Link to={`/san-pham/${p.slug}`}>{p.name}</Link></h3>
+        <p className="sc__pack">{tr(p.pack)}</p>
+        <p className="sc__price">{p.price == null ? t('product.priceNone') : money(p.price)}</p>
+      </div>
+    </article>
+  )
+}

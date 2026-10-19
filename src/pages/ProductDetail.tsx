@@ -3,7 +3,8 @@ import { Link, useParams } from 'react-router-dom'
 import { Minus, Plus } from 'lucide-react'
 import { useI18n } from '../i18n'
 import { getProduct, products } from '../data/catalog'
-import { AddButton, PriceTag, ProductCard } from '../components/ProductBits'
+import { AddButton, PriceTag, ShopCard } from '../components/ProductBits'
+import { Reveal } from '../components/Reveal'
 import { useTitle } from '../useTitle'
 
 export default function ProductDetail() {
@@ -22,7 +23,9 @@ export default function ProductDetail() {
       </div></section>
     )
   }
-  const others = products.filter((p) => p.id !== product.id).slice(0, 2)
+  const rest = products.filter((p) => p.id !== product.id)
+  // same product line first, then fill up to three
+  const others = [...rest.filter((p) => p.line === product.line), ...rest.filter((p) => p.line !== product.line)].slice(0, 3)
   const img = product.gallery[active] ?? product.gallery[0]
 
   return (
@@ -62,8 +65,11 @@ export default function ProductDetail() {
         </div>
       </section>
       <section className="section section--cream">
-        <div className="container pgrid">
-          {others.map((p) => <ProductCard key={p.id} product={p} />)}
+        <div className="container">
+          <h2 className="related__title">{t('product.related')}</h2>
+          <div className="shop__products related__grid">
+            {others.map((p, i) => <Reveal key={p.id} delay={i * 80}><ShopCard p={p} /></Reveal>)}
+          </div>
         </div>
       </section>
     </>

@@ -205,4 +205,5 @@ export const en: Record<keyof typeof vi, string> = {
   'contact.chat': 'Chat',
   'journal.latest': 'Latest articles',
   'combo.save': 'Save {n} compared with buying separately',
+  'product.related': 'Related products',
 }

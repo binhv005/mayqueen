@@ -203,4 +203,5 @@ export const vi = {
   'contact.chat': 'Nhắn tin',
   'journal.latest': 'Bài viết mới',
   'combo.save': 'Tiết kiệm {n} so với mua lẻ',
+  'product.related': 'Sản phẩm liên quan',
 } as const
